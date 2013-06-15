@@ -1,15 +1,13 @@
 from ship import Ship
-import math
+from math import trunc
 
 
 class GateField:
-    """Game field"""
+    """Game field with logic"""
     def __init__(self, width, height, startpos, endpos, obstacles):
         self.width = width
         self.height = height
-        self.field = [[0] * height] * width
-        for o in obstacles:
-            self.field[o[0]][o[1]] = 1
+        self.field = Field(width, height, obstacles)
         self.ship = Ship(startpos)
         self.finish = endpos
 
@@ -18,11 +16,11 @@ class GateField:
 
     def _sensors_state(self):
         circuit = {'s': False, 'w': False, 'n': False, 'e': False}
-        current_cell = (math.trunc(self.ship.coords[0]), math.trunc(self.ship.coords[1]))
-        circuit['s'] = self.field[current_cell[0]][current_cell[1] + 1] if current_cell[1] < self.height - 1 else False
-        circuit['w'] = self.field[current_cell[0] - 1][current_cell[1]] if current_cell[0] > 0 else False
-        circuit['n'] = self.field[current_cell[0]][current_cell[1] - 1] if current_cell[1] > 0 else False
-        circuit['e'] = self.field[current_cell[0] + 1][current_cell[1]] if current_cell[0] < self.width - 1 else False
+        current_cell = (trunc(self.ship.coords[0]), trunc(self.ship.coords[1]))
+        circuit['s'] = self.field.get_at(current_cell[0], current_cell[1] + 1)
+        circuit['w'] = self.field.get_at(current_cell[0] - 1, current_cell[1])
+        circuit['n'] = self.field.get_at(current_cell[0], current_cell[1] - 1)
+        circuit['e'] = self.field.get_at(current_cell[0] + 1, current_cell[1])
         return circuit
 
     def step(self):
@@ -32,3 +30,20 @@ class GateField:
 
         self.ship.set_circuit(self._sensors_state())
         self.ship.process()
+
+
+class Field:
+    """Actual field"""
+    def __init__(self, width, height, obstacles):
+        self.width = width
+        self.height = height
+        self.field = [[0] * height] * width
+        for o in obstacles:
+            if o[0] < 0 or o[0] >= width or o[1] < 0 or o[1] >= height:
+                continue
+            self.field[o[0]][o[1]] = 1
+
+    def get_at(self, x, y):
+        if x < 0 or x >= self.width or y < 0 or y >= self.height:
+            return False
+        return self.field[x][y]
