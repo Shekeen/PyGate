@@ -1,6 +1,8 @@
 from gatefield import GateField
 
-__author__ = 'barzoque'
+
+level_list = []
+
 
 class Level:
     def __init__(self):

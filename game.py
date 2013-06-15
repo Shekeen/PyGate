@@ -1,4 +1,4 @@
-__author__ = 'barzoque'
+from gamelevels import level_list
 
 
 class Game:
@@ -25,4 +25,8 @@ class Game:
         g = Game()
         g.run()
 
+
+class GameOptions:
+    def __init__(self):
+        pass
 
