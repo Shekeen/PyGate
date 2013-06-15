@@ -11,11 +11,11 @@ class Ship:
         outputs = self.circuit.process(self.scanners)
         self.engines['s'], self.engines['w'], self.engines['n'], self.engines['e'] = outputs
 
-    def get_speed(self):
+    def _get_speed(self):
         return 0.1 * (self.engines['w'] - self.engines['e']), 0.1 * (self.engines['n'] - self.engines['s'])
 
     def move(self):
-        speed = self.get_speed()
+        speed = self._get_speed()
         self.prev_coords = self.coords
         self.coords = (self.coords[0] + speed[0], self.coords[1] + speed[1])
 
