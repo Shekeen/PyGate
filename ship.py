@@ -1,6 +1,3 @@
-__author__ = 'barzoque'
-
-
 class Ship:
     """Programmable ship"""
     def __init__(self, pos):

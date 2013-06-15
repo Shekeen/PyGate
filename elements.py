@@ -1,6 +1,3 @@
-__author__ = 'barzoque'
-
-
 class Element:
     """Base class for all circuit elements"""
     def __init__(self):
